@@ -480,6 +480,8 @@
         <div class="produk-grid" id="gridProduk"></div>
     </main>
 
+    @include('partials.checkout')
+    
     <script>
         const produkList = [
             { id: 1, nama: 'Pulpen Gel Hitam 0.5mm', satuan: '1 Pak (12 Pcs)', kategori: 'Alat Tulis', harga: 24000, gambar: 'https://images.unsplash.com/photo-1585336261022-680e295ce3fe?auto=format&fit=crop&w=500&q=80' },
