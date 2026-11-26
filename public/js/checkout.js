@@ -1,14 +1,4 @@
-/* checkout.js — keranjang + checkout + pembayaran
- *
- * KONTRAK dengan halaman katalog (welcome.blade.php):
- *  - Katalog HARUS punya variabel global `produkList` (array {id, nama, harga, ...}).
- *  - Katalog memanggil fungsi ini dari tombolnya:
- *      tambahItem(id), ubahQty(id, delta), tambahPaketHemat(), bukaKeranjang()
- *  - Katalog boleh membaca `keranjang` (array item {id, nama, harga, qty}) untuk
- *    menampilkan jumlah di kartu produk. Jangan di-assign ulang, cukup dibaca.
- *  - Setiap keranjang berubah, file ini memanggil renderProduk() milik katalog (kalau ada)
- *    dan mengisi elemen #badgeCart di navbar katalog.
- */
+
 (function () {
     'use strict';
 

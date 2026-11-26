@@ -1,5 +1,3 @@
-{{-- Bagian keranjang + checkout + pembayaran (pemilik: bagian checkout) --}}
-{{-- Pakai dengan: @include('partials.checkout') di welcome.blade.php, SEBELUM <script> halaman katalog --}}
 <link rel="stylesheet" href="{{ asset('css/checkout.css') }}">
 
 <!-- Overlay & Laci Keranjang -->
