@@ -1,0 +1,248 @@
+/* Header Halaman Keranjang */
+.cart-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.back-link {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #2563eb;
+    text-decoration: none;
+    margin-bottom: 6px;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+.cart-page-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.cart-subtitle {
+    font-size: 13px;
+    color: #64748b;
+}
+
+/* Grid Utama Keranjang */
+.cart-layout {
+    display: grid;
+    grid-template-columns: 1fr 330px;
+    gap: 20px;
+    align-items: start;
+}
+
+/* Kolom Kiri: Daftar Item */
+.cart-items-box {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.cart-item {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.cart-item:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+}
+
+.cart-item-img {
+    width: 76px;
+    height: 76px;
+    object-fit: cover;
+    border-radius: 10px;
+    background-color: #f1f5f9;
+    flex-shrink: 0;
+}
+
+.cart-item-info {
+    flex: 1;
+}
+
+.cart-item-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 2px;
+}
+
+.cart-item-unit {
+    font-size: 12px;
+    color: #64748b;
+}
+
+/* Kontrol Jumlah & Hapus */
+.cart-item-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.qty-control {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #f8fafc;
+}
+
+.qty-btn {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: transparent;
+    font-size: 15px;
+    font-weight: 600;
+    color: #0f172a;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.qty-btn:hover {
+    background-color: #e2e8f0;
+}
+
+.qty-input {
+    width: 36px;
+    height: 30px;
+    text-align: center;
+    border: none;
+    border-left: 1px solid #e2e8f0;
+    border-right: 1px solid #e2e8f0;
+    background-color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    color: #0f172a;
+    font-family: inherit;
+}
+
+.cart-item-subtotal {
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f172a;
+    min-width: 90px;
+    text-align: right;
+}
+
+.btn-hapus {
+    background: none;
+    border: none;
+    color: #ef4444;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.btn-hapus:hover {
+    text-decoration: underline;
+}
+
+/* Kolom Kanan: Ringkasan Belanja */
+.cart-summary {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 20px;
+    position: sticky;
+    top: 88px;
+}
+
+.cart-summary h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 16px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #475569;
+    margin-bottom: 10px;
+}
+
+.summary-row.discount {
+    color: #16a34a;
+    font-weight: 600;
+}
+
+.promo-hint {
+    font-size: 11px;
+    color: #16a34a;
+    background-color: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    padding: 6px 10px;
+    border-radius: 8px;
+    margin-top: 6px;
+}
+
+.summary-divider {
+    border: none;
+    border-top: 1px solid #e2e8f0;
+    margin: 16px 0;
+}
+
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 16px;
+}
+
+.btn-checkout {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background-color: #2563eb;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 11px 16px;
+    border-radius: 10px;
+    transition: background-color 0.15s;
+}
+
+.btn-checkout:hover {
+    background-color: #1d4ed8;
+}
+
+/* Responsif Mobile */
+@media (max-width: 820px) {
+    .cart-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .cart-item {
+        flex-wrap: wrap;
+    }
+
+    .cart-item-actions {
+        width: 100%;
+        justify-content: space-between;
+        padding-top: 10px;
+        border-top: 1px solid #f1f5f9;
+    }
+}

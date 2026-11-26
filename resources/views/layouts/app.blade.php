@@ -8,38 +8,19 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    @yield('styles')
 </head>
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="container nav-inner">
-            <a href="{{ route('home') }}" class="brand" onclick="resetFilter(event)">
-                <span class="brand-dot"></span>
-                <span>Toko ATK</span>
-            </a>
+    @include('kerangka.navbar')
 
-            <div class="search-box">
-                <input type="text" id="inputCari" placeholder="Cari pulpen, kertas HVS, buku..." oninput="renderProduk()">
-            </div>
-
-            <button class="btn-keranjang" onclick="bukaKeranjang()">
-                Keranjang <span class="badge-cart" id="badgeCart">0</span>
-            </button>
-        </div>
-    </nav>
-
-    <!-- Konten Utama -->
     <main class="container main-content">
         @yield('content')
     </main>
 
-    <!-- Komponen Keranjang Slide-over -->
-    @include('partials.cart-drawer')
-
-    <!-- Toast Notifikasi -->
-    <div class="toast" id="toast">Pesanan dicatat!</div>
-
-    <script src="{{ asset('js/app-atk.js') }}"></script>
+<script src="{{ asset('js/app.js') }}"></script>
+    @yield('scripts')
+</body>
+</html>
 </body>
 </html>
