@@ -2,9 +2,9 @@
 (function () {
     'use strict';
 
-    /* ====== PENGATURAN TOKO (ganti sesuai data toko) ====== */
-    const WA_TOKO = '6281234567890';   // nomor WhatsApp toko, format 62...
-    const ONGKIR = 8000;               // ongkos kirim flat
+    
+    const WA_TOKO = '6281234567890';   
+    const ONGKIR = 8000;               
 
     const metodeBayar = [
         {
@@ -25,10 +25,10 @@
         }
     ];
 
-    /* ====== STATE ====== */
-    const keranjang = [];   // diisi/dikosongkan di tempat (tidak pernah di-assign ulang)
 
-    /* ====== UTILITAS ====== */
+    const keranjang = [];  
+
+    
     const formatRp = angka => 'Rp ' + angka.toLocaleString('id-ID');
     const $ = id => document.getElementById(id);
 
@@ -49,7 +49,7 @@
         setTimeout(() => t.classList.remove('show'), 2500);
     }
 
-    /* ====== KERANJANG ====== */
+    
     function tambahItem(id) {
         const produk = produkList.find(p => p.id === id);
         if (!produk) return;
@@ -79,7 +79,7 @@
     function updateCartUI() {
         const totalQty = keranjang.reduce((sum, i) => sum + i.qty, 0);
 
-        const badge = $('badgeCart');   // ada di navbar milik katalog
+        const badge = $('badgeCart');   
         if (badge) badge.textContent = totalQty;
         $('totalHarga').textContent = formatRp(hitungSubtotal());
 
@@ -116,7 +116,7 @@
         $('drawer').classList.remove('open');
     }
 
-    /* ====== CHECKOUT ====== */
+    
     function renderMetodeBayar() {
         $('listBayar').innerHTML = metodeBayar.map(m => `
             <label class="opsi">
@@ -159,7 +159,7 @@
         $('modalCheckout').classList.remove('show');
     }
 
-    // Tandai field bermasalah. Mengembalikan true jika field valid.
+    
     function cekField(inputId, errId, valid) {
         const input = inputId ? $(inputId) : null;
         if (input) input.classList.toggle('error', !valid);
@@ -206,12 +206,10 @@
             total: sub + ongkir
         };
 
-        // TODO (tahap database): kirim `pesanan` ke Laravel lewat fetch('/pesanan', { method: 'POST', ... })
-        // dengan header 'X-CSRF-TOKEN'. Hasilnya nanti dipakai untuk nomor pesanan resmi.
 
         tampilHasil(pesanan);
 
-        keranjang.length = 0;   // kosongkan di tempat agar referensi dari katalog tetap valid
+        keranjang.length = 0;   
         $('namaPemesan').value = '';
         $('noWa').value = '';
         $('alamat').value = '';
@@ -271,7 +269,7 @@
         }
     });
 
-    /* ====== YANG DIBUKA KE LUAR (dipanggil dari HTML katalog & partial) ====== */
+   
     Object.assign(window, {
         keranjang,
         tambahItem, tambahPaketHemat, ubahQty,

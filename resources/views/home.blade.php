@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Reset & Dasar */
+       
         * {
             box-sizing: border-box;
             margin: 0;
@@ -118,7 +118,7 @@
             padding-bottom: 64px;
         }
 
-        /* 1. Banner & Promo Santai */
+       
         .promo-banner {
             background: linear-gradient(125deg, #eff6ff 0%, #f8fafc 65%, #eef2ff 100%);
             border: 1px solid #dbeafe;
@@ -210,7 +210,7 @@
             box-shadow: 0 6px 16px rgba(37, 99, 235, 0.08);
         }
 
-        /* 2. Deretan Chip Kategori */
+       
         .category-strip {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -269,7 +269,7 @@
             color: #1d4ed8;
         }
 
-        /* 3. Header & Grid Katalog Produk */
+        
         .catalog-header {
             display: flex;
             align-items: center;
@@ -383,7 +383,7 @@
             grid-column: 1 / -1;
         }
 
-        /* Responsif Mobile & Tablet */
+        
         @media (max-width: 820px) {
             .category-strip {
                 grid-template-columns: repeat(2, 1fr);
