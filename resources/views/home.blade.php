@@ -32,109 +32,61 @@
         </div>
     </section>
 
-    <!-- 2. Deretan Chip Kategori -->
+    <!-- 2. Deretan Chip Kategori (Dinamis dari Database) -->
     <section class="category-strip">
         <button type="button" class="cat-chip active" data-kat="Semua">
             <span class="cat-chip-name">Semua Barang</span>
-            <span class="cat-chip-count">6 item</span>
+            <span class="cat-chip-count">{{ $produks->count() }} item</span>
         </button>
-        <button type="button" class="cat-chip" data-kat="Alat Tulis">
-            <span class="cat-chip-name">Alat Tulis</span>
-            <span class="cat-chip-count">1 item</span>
-        </button>
-        <button type="button" class="cat-chip" data-kat="Kertas & Buku">
-            <span class="cat-chip-name">Kertas & Buku</span>
-            <span class="cat-chip-count">3 item</span>
-        </button>
-        <button type="button" class="cat-chip" data-kat="Kantor & Arsip">
-            <span class="cat-chip-name">Kantor & Arsip</span>
-            <span class="cat-chip-count">2 item</span>
-        </button>
+
+        @foreach ($kategoris as $kat)
+            <button type="button" class="cat-chip" data-kat="{{ $kat->nama_kategori }}">
+                <span class="cat-chip-name">{{ $kat->nama_kategori }}</span>
+                <span class="cat-chip-count">{{ $kat->total_produk }} item</span>
+            </button>
+        @endforeach
     </section>
 
-    <!-- 3. Header & Grid Katalog Produk -->
+    <!-- 3. Header & Grid Katalog Produk (Dinamis dari Database) -->
     <div class="catalog-header">
         <h2 class="catalog-title">Semua Barang</h2>
-        <span class="jumlah-produk">Menampilkan 6 barang</span>
+        <span class="jumlah-produk">Menampilkan {{ $produks->count() }} barang</span>
     </div>
 
+    @php
+        $gambarProduk = [
+            'ATK-001' => 'https://images.unsplash.com/photo-1585336261022-680e295ce3fe?auto=format&fit=crop&w=500&q=80',
+            'ATK-002' => 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=500&q=80',
+            'ATK-003' => 'https://images.unsplash.com/photo-1531346878377-a5be20888e57?auto=format&fit=crop&w=500&q=80',
+            'ATK-004' => 'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?auto=format&fit=crop&w=500&q=80',
+            'ATK-005' => 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=500&q=80',
+            'ATK-006' => 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=500&q=80',
+        ];
+        $defaultGambar = 'https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?auto=format&fit=crop&w=500&q=80';
+    @endphp
+
     <div class="produk-grid">
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1585336261022-680e295ce3fe?auto=format&fit=crop&w=500&q=80" alt="Pulpen Gel Hitam 0.5mm" class="card-img">
-            <div class="card-body">
-                <span class="card-cat">Alat Tulis</span>
-                <h4 class="card-title">Pulpen Gel Hitam 0.5mm</h4>
-                <p class="card-unit">1 Pak (12 Pcs)</p>
-                <div class="card-footer">
-                    <span class="card-price">Rp 24.000</span>
-                    <button class="btn-beli" type="button">+ Beli</button>
+        @forelse ($produks as $item)
+            <div class="card" data-id="{{ $item->id }}" data-kode="{{ $item->kode_produk }}" data-stok="{{ $item->stok }}">
+                <img 
+                    src="{{ $gambarProduk[$item->kode_produk] ?? $defaultGambar }}" 
+                    alt="{{ $item->nama_produk }}" 
+                    class="card-img"
+                >
+                <div class="card-body">
+                    <span class="card-cat">{{ $item->nama_kategori }}</span>
+                    <h4 class="card-title">{{ $item->nama_produk }}</h4>
+                    <p class="card-unit">Kode: {{ $item->kode_produk }} • Stok: {{ $item->stok }}</p>
+                    <div class="card-footer">
+                        <span class="card-price">Rp {{ number_format($item->harga, 0, ',', '.') }}</span>
+                        <button class="btn-beli" type="button" {{ $item->stok <= 0 ? 'disabled' : '' }}>
+                            {{ $item->stok > 0 ? '+ Beli' : 'Habis' }}
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=500&q=80" alt="Kertas HVS A4 80gsm" class="card-img">
-            <div class="card-body">
-                <span class="card-cat">Kertas & Buku</span>
-                <h4 class="card-title">Kertas HVS A4 80gsm</h4>
-                <p class="card-unit">1 Rim (500 Lembar)</p>
-                <div class="card-footer">
-                    <span class="card-price">Rp 54.000</span>
-                    <button class="btn-beli" type="button">+ Beli</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1531346878377-a5be20888e57?auto=format&fit=crop&w=500&q=80" alt="Buku Tulis Campus 58 Lbr" class="card-img">
-            <div class="card-body">
-                <span class="card-cat">Kertas & Buku</span>
-                <h4 class="card-title">Buku Tulis Campus 58 Lbr</h4>
-                <p class="card-unit">1 Pak (10 Buku)</p>
-                <div class="card-footer">
-                    <span class="card-price">Rp 42.000</span>
-                    <button class="btn-beli" type="button">+ Beli</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?auto=format&fit=crop&w=500&q=80" alt="Stapler HD-10 + Isi" class="card-img">
-            <div class="card-body">
-                <span class="card-cat">Kantor & Arsip</span>
-                <h4 class="card-title">Stapler HD-10 + Isi</h4>
-                <p class="card-unit">1 Set</p>
-                <div class="card-footer">
-                    <span class="card-price">Rp 17.500</span>
-                    <button class="btn-beli" type="button">+ Beli</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=500&q=80" alt="Sticky Notes Warna 3x3" class="card-img">
-            <div class="card-body">
-                <span class="card-cat">Kertas & Buku</span>
-                <h4 class="card-title">Sticky Notes Warna 3x3"</h4>
-                <p class="card-unit">1 Pad (100 Lembar)</p>
-                <div class="card-footer">
-                    <span class="card-price">Rp 11.000</span>
-                    <button class="btn-beli" type="button">+ Beli</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=500&q=80" alt="Map Plastik Kancing Folio" class="card-img">
-            <div class="card-body">
-                <span class="card-cat">Kantor & Arsip</span>
-                <h4 class="card-title">Map Plastik Kancing Folio</h4>
-                <p class="card-unit">1 Lusin (12 Pcs)</p>
-                <div class="card-footer">
-                    <span class="card-price">Rp 29.000</span>
-                    <button class="btn-beli" type="button">+ Beli</button>
-                </div>
-            </div>
-        </div>
+        @empty
+            <p>Belum ada produk tersedia di katalog.</p>
+        @endforelse
     </div>
 @endsection

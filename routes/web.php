@@ -1,15 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
-
-Route::get('/keranjang', function () {
-    return view('keranjang');
-})->name('keranjang');
-
-Route::get('/checkout', function () {
-    return view('checkout');
-})->name('checkout');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/keranjang', [HomeController::class, 'keranjang'])->name('keranjang');
+Route::get('/checkout', [HomeController::class, 'checkout'])->name('checkout');
