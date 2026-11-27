@@ -3,7 +3,7 @@
 @section('title', 'Toko ATK — Etalase Alat Tulis Harian')
 
 @section('content')
-    <!-- Bar Pencarian di Tengah & Keranjang di Pojok Kanan -->
+    <!-- Bar Pencarian di Tengah & Tombol Kelola Stok + Keranjang di Pojok Kanan -->
     <div class="home-topbar">
         <div class="home-topbar-spacer"></div>
 
@@ -11,9 +11,14 @@
             <input type="text" id="inputCari" name="q" placeholder="Cari pulpen, kertas HVS, buku...">
         </div>
 
-        <a href="{{ route('keranjang') }}" class="btn-keranjang">
-            Keranjang <span class="badge-cart">0</span>
-        </a>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <a href="{{ route('atk.index') }}" class="btn-keranjang" style="background: #f8fafc; color: #0f172a; border: 1px solid #cbd5e1;">
+                Kelola Stok
+            </a>
+            <a href="{{ route('keranjang') }}" class="btn-keranjang">
+                Keranjang <span class="badge-cart">0</span>
+            </a>
+        </div>
     </div>
 
     <!-- 1. Banner & Promo Santai -->
