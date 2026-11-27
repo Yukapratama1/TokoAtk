@@ -6,14 +6,27 @@
     const ONGKIR = 8000;               // ongkos kirim flat
     const STORAGE_KEY = 'toko_atk_keranjang';
 
-    const produkList = [
-        { id: 1, nama: 'Pulpen Gel Hitam 0.5mm', satuan: '1 Pak (12 Pcs)', kategori: 'Alat Tulis', harga: 24000, gambar: 'https://images.unsplash.com/photo-1585336261022-680e295ce3fe?auto=format&fit=crop&w=500&q=80' },
-        { id: 2, nama: 'Kertas HVS A4 80gsm', satuan: '1 Rim (500 Lembar)', kategori: 'Kertas & Buku', harga: 54000, gambar: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=500&q=80' },
-        { id: 3, nama: 'Buku Tulis Campus 58 Lbr', satuan: '1 Pak (10 Buku)', kategori: 'Kertas & Buku', harga: 42000, gambar: 'https://images.unsplash.com/photo-1531346878377-a5be20888e57?auto=format&fit=crop&w=500&q=80' },
-        { id: 4, nama: 'Stapler HD-10 + Isi', satuan: '1 Set', kategori: 'Kantor & Arsip', harga: 17500, gambar: 'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?auto=format&fit=crop&w=500&q=80' },
-        { id: 5, nama: 'Sticky Notes Warna 3x3"', satuan: '1 Pad (100 Lembar)', kategori: 'Kertas & Buku', harga: 11000, gambar: 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=500&q=80' },
-        { id: 6, nama: 'Map Plastik Kancing Folio', satuan: '1 Lusin (12 Pcs)', kategori: 'Kantor & Arsip', harga: 29000, gambar: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=500&q=80' }
-    ];
+    // Ambil data produk langsung dari kartu HTML yang dirender Blade (PostgreSQL)
+    function bacaProdukDariDOM() {
+        const cards = document.querySelectorAll('.produk-grid .card');
+        if (!cards.length) return [];
+
+        return Array.from(cards).map((card, index) => {
+            const id = Number(card.dataset.id) || (index + 1);
+            const kode = card.dataset.kode || '';
+            const stok = Number(card.dataset.stok ?? 0);
+            const nama = card.querySelector('.card-title')?.textContent.trim() || '';
+            const kategori = card.querySelector('.card-cat')?.textContent.trim() || '';
+            const satuan = card.querySelector('.card-unit')?.textContent.trim() || '';
+            const gambar = card.querySelector('.card-img')?.getAttribute('src') || '';
+            const hargaTeks = card.querySelector('.card-price')?.textContent || '0';
+            const harga = Number(hargaTeks.replace(/[^\d]/g, '')) || 0;
+
+            return { id, kode, stok, nama, satuan, kategori, harga, gambar };
+        });
+    }
+
+    let produkList = [];
 
     const metodeBayar = [
         {
@@ -83,9 +96,17 @@
     function tambahItem(id) {
         const produk = produkList.find(p => p.id === id);
         if (!produk) return;
+        if (produk.stok <= 0) return tampilToast('Stok produk habis');
+
         const ada = keranjang.find(c => c.id === id);
-        if (ada) ada.qty++;
-        else keranjang.push({ ...produk, qty: 1 });
+        if (ada) {
+            if (ada.qty >= produk.stok) {
+                return tampilToast(`Maksimal stok tersedia (${produk.stok})`);
+            }
+            ada.qty++;
+        } else {
+            keranjang.push({ ...produk, qty: 1 });
+        }
         simpanKeranjang();
         updateCartUI();
         tampilToast(`${produk.nama} ditambahkan ke keranjang`);
@@ -126,7 +147,7 @@
     function updateCartUI() {
         const totalQty = keranjang.reduce((sum, i) => sum + i.qty, 0);
 
-        // 1. Update badge di navbar (semua halaman)
+        // 1. Update badge di navbar / topbar
         const badge = document.querySelector('.badge-cart');
         if (badge) badge.textContent = totalQty;
 
@@ -197,6 +218,9 @@
         const grid = document.querySelector('.produk-grid');
         if (!grid) return;
 
+        // Baca data asli hasil render PostgreSQL dari DOM sebelum memfilter
+        produkList = bacaProdukDariDOM();
+
         let kategoriAktif = 'Semua';
         const inputCari = $('inputCari');
         const judulKatalog = document.querySelector('.catalog-title');
@@ -207,7 +231,9 @@
             const kataKunci = (inputCari ? inputCari.value : '').toLowerCase().trim();
             const hasil = produkList.filter(p => {
                 const cocokKat = kategoriAktif === 'Semua' || p.kategori === kategoriAktif;
-                const cocokCari = p.nama.toLowerCase().includes(kataKunci) || p.kategori.toLowerCase().includes(kataKunci);
+                const cocokCari = p.nama.toLowerCase().includes(kataKunci)
+                    || p.kategori.toLowerCase().includes(kataKunci)
+                    || p.kode.toLowerCase().includes(kataKunci);
                 return cocokKat && cocokCari;
             });
 
@@ -220,7 +246,7 @@
             }
 
             grid.innerHTML = hasil.map(p => `
-                <div class="card">
+                <div class="card" data-id="${p.id}" data-kode="${esc(p.kode)}" data-stok="${p.stok}">
                     <img src="${esc(p.gambar)}" alt="${esc(p.nama)}" class="card-img">
                     <div class="card-body">
                         <span class="card-cat">${esc(p.kategori)}</span>
@@ -228,7 +254,9 @@
                         <p class="card-unit">${esc(p.satuan)}</p>
                         <div class="card-footer">
                             <span class="card-price">${formatRp(p.harga)}</span>
-                            <button class="btn-beli" type="button" data-id="${p.id}">+ Beli</button>
+                            <button class="btn-beli" type="button" data-id="${p.id}" ${p.stok <= 0 ? 'disabled' : ''}>
+                                ${p.stok > 0 ? '+ Beli' : 'Habis'}
+                            </button>
                         </div>
                     </div>
                 </div>
